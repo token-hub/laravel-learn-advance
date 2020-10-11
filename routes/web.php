@@ -1,8 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Jobs\SendMail;
 use App\Events\UserWasBannned;
 use Illuminate\Support\Facades\Route;
+use App\Notifications\MailNotification;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +34,11 @@ Route::get('/login', function () {
     $user = User::first();
     Auth::login($user);
     return redirect('/');
+});
+
+Route::get('/send', function () {
+    dispatch(new SendMail(auth()->user()));
+    dd('email sent!');
 });
 
 Route::get('/test', function () {
